@@ -1,14 +1,18 @@
 package com.kwee.jonathan.exceptions.handler;
 
+import com.kwee.jonathan.exceptions.ParseFileException;
 import com.kwee.jonathan.exceptions.noarguments.NoArgumentsException;
 import com.kwee.jonathan.exceptions.nofileextension.NoFileExtensionException;
 import com.kwee.jonathan.exceptions.simple.SimpleExceptionResolver;
 import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
 import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterExceptionResolver;
+import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.InvalidPathException;
 
 /**
@@ -42,6 +46,16 @@ public class ExceptionHandlerAspect {
 
     @AfterThrowing(pointcut = "execution(* com.kwee.jonathan..*(..))", throwing = "ex")
     public void handleNoFileExtensionException(NoFileExtensionException ex) {
+        printAndShutdown(simpleExceptionResolver.resolveExceptionToString(ex));
+    }
+
+    @AfterThrowing(pointcut = "execution(* com.kwee.jonathan..*(..))", throwing = "ex")
+    public void handleFileNotFoundException(FileNotFoundException ex) {
+        printAndShutdown(simpleExceptionResolver.resolveExceptionToString(ex));
+    }
+
+    @AfterThrowing(pointcut = "execution(* com.kwee.jonathan..*(..))", throwing = "ex")
+    public void handleParseFileException(ParseFileException ex) {
         printAndShutdown(simpleExceptionResolver.resolveExceptionToString(ex));
     }
 

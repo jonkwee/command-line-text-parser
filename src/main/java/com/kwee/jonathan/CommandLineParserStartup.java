@@ -1,33 +1,25 @@
 package com.kwee.jonathan;
 
-import com.kwee.jonathan.constants.Delimiter;
 import com.kwee.jonathan.constants.Option;
 import com.kwee.jonathan.dtos.Options;
+import com.kwee.jonathan.exceptions.ParseFileException;
 import com.kwee.jonathan.exceptions.noarguments.NoArgumentsException;
 import com.kwee.jonathan.exceptions.nofileextension.NoFileExtensionException;
 import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
-import com.kwee.jonathan.parser.FileParser;
+import com.kwee.jonathan.parser.factory.FileParser;
+import com.kwee.jonathan.parser.factory.FileParserFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.nio.charset.StandardCharsets;
+import java.io.FileNotFoundException;
 import java.nio.file.InvalidPathException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Component
 public class CommandLineParserStartup implements ApplicationRunner {
-
-    private FileParser fileParser;
-
-    public CommandLineParserStartup(FileParser fileParser) {
-        this.fileParser = fileParser;
-    }
 
     // Option line syntax
     // java -jar command-line-parser.jar FILEPATH [OPTIONS]
@@ -35,7 +27,7 @@ public class CommandLineParserStartup implements ApplicationRunner {
     // --encoding [ARGUMENT] valid arguments: utf-8, iso-8859-1, us-ascii, utf-16. default: utf-8
     @Override
     public void run(ApplicationArguments args) throws UnsupportedDelimiterException, NoArgumentsException,
-            InvalidPathException, NoFileExtensionException {
+            InvalidPathException, NoFileExtensionException, FileNotFoundException, ParseFileException {
 
         List<String> arguments = args.getNonOptionArgs();
         Options options = constructOptions(args.getSourceArgs());
@@ -45,12 +37,9 @@ public class CommandLineParserStartup implements ApplicationRunner {
             throw new NoArgumentsException("Please provide a file path as an argument.");
         }
 
-        String fileExtension = options.getFileExtension();
-        if (Delimiter.isExtensionValid(fileExtension)) {
-            fileParser.readAndParseFile(options.getInputFile(), Delimiter.convertNameToChar(fileExtension), options);
-        } else {
-            throw new UnsupportedDelimiterException(fileExtension);
-        }
+        FileParser fileParser = FileParserFactory.instantiateFileParser(options.getFileExtension());
+        fileParser.parseAndOutput(options);
+
     }
 
     private Options constructOptions(String[] arguments) throws NoFileExtensionException {

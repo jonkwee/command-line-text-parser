@@ -30,7 +30,7 @@ public enum Delimiter {
                 .anyMatch(delimiters -> delimiters.getDelimiterExtension().equalsIgnoreCase(extension));
     }
 
-    public static Delimiter convertNameToChar(String name) throws UnsupportedDelimiterException {
+    public static Delimiter convertNameToDelimiter(String name) throws UnsupportedDelimiterException {
         return Arrays.stream(Delimiter.values())
                 .filter(delimiters -> delimiters.delimiterExtension.equalsIgnoreCase(name))
                 .findFirst()
