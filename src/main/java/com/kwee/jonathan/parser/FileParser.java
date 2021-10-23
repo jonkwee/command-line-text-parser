@@ -1,23 +1,23 @@
 package com.kwee.jonathan.parser;
 
 import com.kwee.jonathan.constants.Delimiter;
+import com.kwee.jonathan.dtos.Options;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class FileParser {
 
-    public void readAndParseFile(File file, Delimiter delimiter) {
+    public void readAndParseFile(File file, Delimiter delimiter, Options options) {
         char delimiterChar = delimiter.getDelimiter();
-        // charset should be an option
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
+
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(file, options.getEncoding()));
+            BufferedWriter bufferedWriter = options.getOutputFile() != null ?
+                    new BufferedWriter(new FileWriter(options.getOutputFile(), options.getEncoding())) : null) {
+
             int character;
             List<String> storedString = new ArrayList<>();
             StringBuilder stringBuilder = new StringBuilder();
@@ -28,8 +28,23 @@ public class FileParser {
                 } else if (character == '\n') {
                     storedString.add(stringBuilder.toString());
                     stringBuilder = new StringBuilder();
-                    System.out.println(storedString);
+                    writeToOutput(storedString,bufferedWriter);
                     storedString.clear();
+                } else if (character == '\r') {
+                    character = bufferedReader.read();
+                    if (character == '\n') {
+                        stringBuilder.append(character);
+                        storedString.add(stringBuilder.toString());
+                        stringBuilder = new StringBuilder();
+                        writeToOutput(storedString,bufferedWriter);
+                        storedString.clear();
+                    } else {
+                        storedString.add(stringBuilder.toString());
+                        stringBuilder = new StringBuilder();
+                        writeToOutput(storedString,bufferedWriter);
+                        storedString.clear();
+                        if (character != -1) stringBuilder.append(character);
+                    }
                 } else {
                     stringBuilder.append((char) character);
                 }
@@ -40,6 +55,16 @@ public class FileParser {
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        }
+    }
+
+    //TODO: Handle IOException in Aspect
+    private void writeToOutput(List<String> line, BufferedWriter bufferedWriter) throws IOException {
+        if (bufferedWriter == null) {
+            System.out.println(line);
+        } else {
+            bufferedWriter.write(line.toString());
+            bufferedWriter.newLine();
         }
     }
 

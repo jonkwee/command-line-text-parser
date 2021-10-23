@@ -11,7 +11,6 @@ import java.util.Arrays;
 public enum Delimiter {
 
     TAB("tab", '\t'),
-    NEWLINE("newline", '\n'),
     SPACE("space", ' '),
     COMMA("csv", ',');
 
