@@ -1,10 +1,10 @@
 package com.kwee.jonathan;
 
-import com.google.common.io.Files;
-import com.kwee.jonathan.constants.Delimiters;
+import com.kwee.jonathan.constants.Delimiter;
 import com.kwee.jonathan.exceptions.noarguments.NoArgumentsException;
 import com.kwee.jonathan.exceptions.nofileextension.NoFileExtensionException;
 import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
+import com.kwee.jonathan.parser.FileParser;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -18,6 +18,12 @@ import java.util.Optional;
 
 @Component
 public class CommandLineParserStartup implements ApplicationRunner {
+
+    private FileParser fileParser;
+
+    public CommandLineParserStartup(FileParser fileParser) {
+        this.fileParser = fileParser;
+    }
 
     @Override
     public void run(ApplicationArguments args) throws UnsupportedDelimiterException, NoArgumentsException,
@@ -39,8 +45,8 @@ public class CommandLineParserStartup implements ApplicationRunner {
             .map(n -> n.substring(n.lastIndexOf(".") + 1))
             .orElseThrow(() -> new NoFileExtensionException("Please provide a file path with a file extension that is delimited by '.'"));
 
-        if (Delimiters.isExtensionValid(fileExtension)) {
-
+        if (Delimiter.isExtensionValid(fileExtension)) {
+            fileParser.readAndParseFile(file, Delimiter.convertNameToChar(fileExtension));
         } else {
             throw new UnsupportedDelimiterException(fileExtension);
         }
