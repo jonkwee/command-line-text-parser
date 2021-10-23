@@ -45,28 +45,25 @@ public class CommandLineParserStartup implements ApplicationRunner {
             throw new NoArgumentsException("Please provide a file path as an argument.");
         }
 
-        // Will always pick the first argument as file path
-        String filePathArgument = arguments.get(0);
-
-        Path filePath = Paths.get(filePathArgument);
-        File file = filePath.toFile();
-        String fileExtension = Optional.of(file.getName())
-            .filter(n -> n.contains("."))
-            .map(n -> n.substring(n.lastIndexOf(".") + 1))
-            .orElseThrow(() -> new NoFileExtensionException("Please provide a file path with a file extension that is delimited by '.'"));
-
+        String fileExtension = options.getFileExtension();
         if (Delimiter.isExtensionValid(fileExtension)) {
-            fileParser.readAndParseFile(file, Delimiter.convertNameToChar(fileExtension), options);
+            fileParser.readAndParseFile(options.getInputFile(), Delimiter.convertNameToChar(fileExtension), options);
         } else {
             throw new UnsupportedDelimiterException(fileExtension);
         }
     }
 
-    private Options constructOptions(String[] arguments) {
+    private Options constructOptions(String[] arguments) throws NoFileExtensionException {
+
+        Options options = new Options();
+
+        // Extract extension from file name
+        options.setInputFile(arguments[0]);
+        options.setFileExtension(extractFileExtension(options.getInputFile()));
+
         // First argument is file name and not an option so can be skipped.
         int argumentPointer = 1;
 
-        Options.OptionsBuilder options = Options.builder();
         while (argumentPointer < arguments.length) {
             String argument = arguments[argumentPointer];
             if (argument.startsWith("--")) {
@@ -76,16 +73,23 @@ public class CommandLineParserStartup implements ApplicationRunner {
                 String parameter = arguments[++argumentPointer];
 
                 if (Option.ENCODING.name().equalsIgnoreCase(argument)) {
-                    options.encoding(parameter);
+                    options.setEncoding(parameter);
                 } else if (Option.OUTPUT.name().equalsIgnoreCase(argument)) {
-                    options.outputFile(parameter);
+                    options.setOutputFile(parameter);
                 }
             }
 
             ++argumentPointer;
         }
 
-        return options.build();
+        return options;
+    }
+
+    private String extractFileExtension(File inputFile) throws NoFileExtensionException {
+        return Optional.of(inputFile.getName())
+                .filter(n -> n.contains("."))
+                .map(n -> n.substring(n.lastIndexOf(".") + 1))
+                .orElseThrow(() -> new NoFileExtensionException("Please provide a file path with a file extension that is delimited by '.'"));
     }
 
 

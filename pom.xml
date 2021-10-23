@@ -39,13 +39,6 @@
             </exclusions>
         </dependency>
 
-        <!-- Utilities -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
-
         <!-- Aspects -->
         <dependency>
             <groupId>org.springframework</groupId>
