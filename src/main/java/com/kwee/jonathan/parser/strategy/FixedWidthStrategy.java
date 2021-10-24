@@ -22,6 +22,7 @@ public class FixedWidthStrategy implements ParseStrategy {
         while ((character = reader.read()) != -1) {
             if (stringBuilder.length() == fixedWidthLength) {
                 stringBuilder = addAndResetString(stringBuilder, storedString);
+                stringBuilder.append((char) character);
             } else if (character == '\n') {
                 stringBuilder = addAndResetString(stringBuilder, storedString);
                 writeToOutput(storedString, writer);

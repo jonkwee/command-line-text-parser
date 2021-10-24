@@ -19,4 +19,8 @@ public class FileParser {
             throws ParseFileException, FileNotFoundException, UnsupportedDelimiterException {
         parseStrategy.parseAndOutput(options);
     }
+
+    public Class<? extends ParseStrategy> getStrategyType() {
+        return parseStrategy.getClass();
+    }
 }
