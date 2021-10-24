@@ -21,9 +21,11 @@
         <maven.jar.plugin.version>3.2.0</maven.jar.plugin.version>
         <maven.assembly.plugin.version>3.3.0</maven.assembly.plugin.version>
         <guava.version>31.0.1-jre</guava.version>
-        <spring.aspect.version>5.3.10</spring.aspect.version>
+        <spring.version>5.3.10</spring.version>
         <aspectj.version>1.9.7</aspectj.version>
         <mojo.aspectJ.plugin.version>1.14.0</mojo.aspectJ.plugin.version>
+        <junit.version>5.7.0</junit.version>
+        <maven.test.plugin>2.22.2</maven.test.plugin>
     </properties>
 
     <dependencies>
@@ -43,7 +45,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-aspects</artifactId>
-            <version>${spring.aspect.version}</version>
+            <version>${spring.version}</version>
         </dependency>
         <dependency>
             <groupId>org.aspectj</groupId>
@@ -54,6 +56,32 @@
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
             <version>${aspectj.version}</version>
+        </dependency>
+
+        <!-- Testing -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -123,6 +151,16 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+
+            <!-- Testing -->
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.test.plugin}</version>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${maven.test.plugin}</version>
             </plugin>
         </plugins>
     </build>

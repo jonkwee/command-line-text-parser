@@ -13,14 +13,14 @@ public class UnsupportedDelimiterExceptionResolver implements ExceptionResolver 
 
         StringBuilder unsupportedDelimiterErrorMessageFormat =
             new StringBuilder(
-                    "Extension: '%s' is not currently supported. Please use one of the supported delimiters: \n"
+                    "Extension: '%s' is not currently supported. Please use one of the supported delimiters:"
             );
 
         for (Delimiter d : Delimiter.values()) {
             unsupportedDelimiterErrorMessageFormat
+                .append("\n")
                 .append("- ")
-                .append(d.getDelimiterExtension())
-                .append("\n");
+                .append(d.getDelimiterExtension());
         }
 
         return String.format(unsupportedDelimiterErrorMessageFormat.toString(), unsupportedDelimiterException.getExtension());

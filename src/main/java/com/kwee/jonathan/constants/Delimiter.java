@@ -6,13 +6,14 @@ import java.util.Arrays;
 
 /**
  * Single source of truth for delimiters. Internal logic for parsing will make use of these enums.
- * Supporting a new delimiter will be as easy as adding a new delimiter in this file.
+ * Supporting a new delimiter character will be as easy as adding a new delimiter in this file.
  */
 public enum Delimiter {
 
     TAB("tab", '\t'),
     SPACE("space", ' '),
-    COMMA("csv", ',');
+    COMMA("csv", ','),
+    ARROW("pipe", '|');
 
     private final String delimiterExtension;
     private final char delimiter;
