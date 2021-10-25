@@ -77,6 +77,8 @@ public interface ParseStrategy {
      */
     default StringBuilder addAndResetString(StringBuilder sb, List<String> storedString) {
         String newString = sb.toString();
+
+        // If token is either empty or whitespace, don't include it in the overall output.
         if (!newString.isBlank()) {
             storedString.add(newString);
         }

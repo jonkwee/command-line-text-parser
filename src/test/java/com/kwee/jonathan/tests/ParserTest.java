@@ -84,7 +84,7 @@ public class ParserTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "MOCK_DATA.10" })
+    @ValueSource(strings = { "MOCK_DATA.10" , "MOCK_DATA.1" })
     public void fixedWidthTest(String fileName)
             throws UnsupportedDelimiterException, ParseFileException, IOException {
         String delimiter = fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -129,9 +129,8 @@ public class ParserTest {
     private List<String> splitByFixedWidth(String text, int size) {
         List<String> lineContent = new ArrayList<>((text.length() + size - 1) / size);
         for (int start = 0; start < text.length(); start += size) {
-            lineContent.add(
-                text.substring(start, Math.min(text.length(), start + size))
-            );
+            String fixedWidthString = text.substring(start, Math.min(text.length(), start + size));
+            if (!fixedWidthString.isBlank()) lineContent.add(fixedWidthString);
         }
         return lineContent;
     }
