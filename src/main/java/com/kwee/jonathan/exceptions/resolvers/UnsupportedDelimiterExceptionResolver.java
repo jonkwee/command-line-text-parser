@@ -1,7 +1,8 @@
-package com.kwee.jonathan.exceptions.unsupporteddelimiter;
+package com.kwee.jonathan.exceptions.resolvers;
 
 import com.kwee.jonathan.constants.Delimiter;
 import com.kwee.jonathan.exceptions.handler.interfaces.ExceptionResolver;
+import com.kwee.jonathan.exceptions.UnsupportedDelimiterException;
 import org.springframework.stereotype.Component;
 
 @Component

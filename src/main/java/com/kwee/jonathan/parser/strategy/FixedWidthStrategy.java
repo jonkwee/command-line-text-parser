@@ -1,7 +1,7 @@
 package com.kwee.jonathan.parser.strategy;
 
 import com.kwee.jonathan.dtos.Options;
-import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
+import com.kwee.jonathan.exceptions.UnsupportedDelimiterException;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

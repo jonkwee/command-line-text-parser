@@ -1,4 +1,4 @@
-package com.kwee.jonathan.exceptions.unsupporteddelimiter;
+package com.kwee.jonathan.exceptions;
 
 public class UnsupportedDelimiterException extends Exception {
 

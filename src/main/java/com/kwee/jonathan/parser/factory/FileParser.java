@@ -2,7 +2,7 @@ package com.kwee.jonathan.parser.factory;
 
 import com.kwee.jonathan.dtos.Options;
 import com.kwee.jonathan.exceptions.ParseFileException;
-import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
+import com.kwee.jonathan.exceptions.UnsupportedDelimiterException;
 import com.kwee.jonathan.parser.strategy.ParseStrategy;
 
 import java.io.FileNotFoundException;

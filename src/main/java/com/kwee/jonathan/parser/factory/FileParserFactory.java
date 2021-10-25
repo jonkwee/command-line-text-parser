@@ -1,7 +1,7 @@
 package com.kwee.jonathan.parser.factory;
 
 import com.kwee.jonathan.constants.Delimiter;
-import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
+import com.kwee.jonathan.exceptions.UnsupportedDelimiterException;
 import com.kwee.jonathan.parser.strategy.CustomDelimiterStrategy;
 import com.kwee.jonathan.parser.strategy.FixedWidthStrategy;
 

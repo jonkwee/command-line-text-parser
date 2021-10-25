@@ -2,11 +2,10 @@ package com.kwee.jonathan.parser.strategy;
 
 import com.kwee.jonathan.dtos.Options;
 import com.kwee.jonathan.exceptions.ParseFileException;
-import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
+import com.kwee.jonathan.exceptions.UnsupportedDelimiterException;
 
 import java.io.*;
 import java.util.List;
-import java.util.function.Consumer;
 
 public interface ParseStrategy {
 

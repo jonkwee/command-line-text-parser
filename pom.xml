@@ -138,6 +138,7 @@
                 </executions>
             </plugin>
 
+            <!-- Plugin used for packaging spring boot application -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>

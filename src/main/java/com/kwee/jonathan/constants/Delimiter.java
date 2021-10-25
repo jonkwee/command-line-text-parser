@@ -1,6 +1,6 @@
 package com.kwee.jonathan.constants;
 
-import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
+import com.kwee.jonathan.exceptions.UnsupportedDelimiterException;
 
 import java.util.Arrays;
 

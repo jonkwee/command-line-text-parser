@@ -1,4 +1,4 @@
-package com.kwee.jonathan.exceptions.nofileextension;
+package com.kwee.jonathan.exceptions;
 
 public class NoFileExtensionException extends Exception {
 

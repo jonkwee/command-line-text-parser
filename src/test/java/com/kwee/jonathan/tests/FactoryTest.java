@@ -4,7 +4,7 @@ import com.kwee.jonathan.CommandLineParserApplication;
 import com.kwee.jonathan.CustomSecurityManager;
 import com.kwee.jonathan.constants.Delimiter;
 import com.kwee.jonathan.exceptions.SystemExitException;
-import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
+import com.kwee.jonathan.exceptions.UnsupportedDelimiterException;
 import com.kwee.jonathan.parser.factory.FileParser;
 import com.kwee.jonathan.parser.factory.FileParserFactory;
 import com.kwee.jonathan.parser.strategy.CustomDelimiterStrategy;

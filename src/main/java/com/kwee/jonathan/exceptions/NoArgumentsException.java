@@ -1,4 +1,4 @@
-package com.kwee.jonathan.exceptions.noarguments;
+package com.kwee.jonathan.exceptions;
 
 public class NoArgumentsException extends Exception {
 
