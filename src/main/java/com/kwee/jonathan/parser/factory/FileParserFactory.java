@@ -7,6 +7,11 @@ import com.kwee.jonathan.parser.strategy.FixedWidthStrategy;
 
 public class FileParserFactory {
 
+    /**
+     * @param fileExtension a string that represents a file's extension.
+     * @return an implementation of {@link com.kwee.jonathan.parser.factory.FileParser} based on provided extension.
+     * @throws UnsupportedDelimiterException if provided extension is not supported in current version.
+     */
     public static FileParser instantiateFileParser(String fileExtension) throws UnsupportedDelimiterException {
         if (isExtensionNumeric(fileExtension)) {
             return new FileParser(new FixedWidthStrategy());
@@ -17,6 +22,10 @@ public class FileParserFactory {
         }
     }
 
+    /**
+     * @param fileExtension a string that represents a file's extension
+     * @return true if provided file extension is numeric and positive, else false.
+     */
     private static boolean isExtensionNumeric(String fileExtension) {
         long extension;
         try {

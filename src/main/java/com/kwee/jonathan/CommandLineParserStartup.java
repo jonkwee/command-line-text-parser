@@ -19,10 +19,6 @@ import java.util.Optional;
 @Component
 public class CommandLineParserStartup implements CommandLineRunner {
 
-    // Option line syntax
-    // java -jar command-line-parser.jar FILEPATH [OPTIONS]
-    // Options:
-    // --encoding [ARGUMENT] valid arguments: utf-8, iso-8859-1, us-ascii, utf-16. default: utf-8
     @Override
     public void run(String... args) throws UnsupportedDelimiterException, NoArgumentsException,
             InvalidPathException, NoFileExtensionException, FileNotFoundException, ParseFileException {
@@ -32,11 +28,21 @@ public class CommandLineParserStartup implements CommandLineRunner {
             throw new NoArgumentsException("Please provide a file path as an argument.");
         }
 
+        checkIfHelpOption(args);
         Options options = constructOptions(args);
 
         FileParser fileParser = FileParserFactory.instantiateFileParser(options.getFileExtension());
         fileParser.parseAndOutput(options);
+    }
 
+    private void checkIfHelpOption(String[] arguments) {
+        if (arguments.length > 0) {
+            String option = arguments[0];
+            if (option.startsWith("--") && Option.HELP.name().equalsIgnoreCase(option.substring(2))) {
+                System.out.println(Option.HELP_TEXT);
+                System.exit(0);
+            }
+        }
     }
 
     private Options constructOptions(String[] arguments) throws NoFileExtensionException {

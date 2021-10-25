@@ -6,19 +6,18 @@ import com.kwee.jonathan.exceptions.nofileextension.NoFileExtensionException;
 import com.kwee.jonathan.exceptions.simple.SimpleExceptionResolver;
 import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
 import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterExceptionResolver;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.nio.file.InvalidPathException;
 
 /**
- * Aspect to handle global exceptions through weaving. For each possible exception that could occur
- * in this program, implement a custom ExceptionResolver for the exception such that a user-friendly
- * message can be displayed on the command prompt.
+ * Aspect to handle global exceptions through weaving. Resolves exceptions to a user-friendly message to be printed on the console.
+ * For each possible exception that could occur in this program, implement a custom {@link com.kwee.jonathan.exceptions.handler.interfaces.ExceptionResolver}
+ * if the error message requires additional logic to render. If the error message is just a static string, make use of
+ * the {@link com.kwee.jonathan.exceptions.simple.SimpleExceptionResolver}.
  */
 @Aspect
 public class ExceptionHandlerAspect {

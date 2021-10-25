@@ -1,5 +1,7 @@
-package com.kwee.jonathan;
+package com.kwee.jonathan.tests;
 
+import com.kwee.jonathan.CommandLineParserApplication;
+import com.kwee.jonathan.CustomSecurityManager;
 import com.kwee.jonathan.constants.Delimiter;
 import com.kwee.jonathan.dtos.Options;
 import com.kwee.jonathan.exceptions.ParseFileException;
@@ -101,7 +103,7 @@ public class ParserTest {
         return options;
     }
 
-    private String retrieveFileContents(String filePath, String delimiter) throws IOException, UnsupportedDelimiterException {
+    public static String retrieveFileContents(String filePath, String delimiter) throws IOException, UnsupportedDelimiterException {
         List<String> contents = Files.readAllLines(Path.of(filePath));
         StringBuilder sb = new StringBuilder();
         for (String content : contents) {

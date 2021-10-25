@@ -1,5 +1,8 @@
-package com.kwee.jonathan;
+package com.kwee.jonathan.tests;
 
+import com.kwee.jonathan.CommandLineParserApplication;
+import com.kwee.jonathan.CommandLineParserStartup;
+import com.kwee.jonathan.CustomSecurityManager;
 import com.kwee.jonathan.constants.Delimiter;
 import com.kwee.jonathan.exceptions.ParseFileException;
 import com.kwee.jonathan.exceptions.SystemExitException;
