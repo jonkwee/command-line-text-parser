@@ -20,8 +20,6 @@ public final class Options {
             this.encoding = StandardCharsets.ISO_8859_1;
         } else if (encoding.equalsIgnoreCase(StandardCharsets.US_ASCII.name())) {
             this.encoding = StandardCharsets.US_ASCII;
-        } else if (encoding.equalsIgnoreCase(StandardCharsets.UTF_16.name())) {
-            this.encoding = StandardCharsets.UTF_16;
         } else {
             this.encoding = StandardCharsets.UTF_8;
         }

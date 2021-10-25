@@ -3,12 +3,9 @@ package com.kwee.jonathan.tests;
 import com.kwee.jonathan.CommandLineParserApplication;
 import com.kwee.jonathan.CommandLineParserStartup;
 import com.kwee.jonathan.CustomSecurityManager;
+import com.kwee.jonathan.constants.Delimiter;
 import com.kwee.jonathan.constants.Option;
-import com.kwee.jonathan.exceptions.ParseFileException;
-import com.kwee.jonathan.exceptions.SystemExitException;
-import com.kwee.jonathan.exceptions.NoArgumentsException;
-import com.kwee.jonathan.exceptions.NoFileExtensionException;
-import com.kwee.jonathan.exceptions.UnsupportedDelimiterException;
+import com.kwee.jonathan.exceptions.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -69,6 +66,20 @@ public class OptionTest {
         Assertions.assertTrue(customOut.toString().trim().isBlank());
 
         outputFile.delete();
+
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = { "utf-8", "iso-8859-1", "us-ascii"})
+    public void encodingOptionTest(String encoding)
+            throws ParseFileException, NoArgumentsException, IOException, UnsupportedDelimiterException, NoFileExtensionException {
+
+        customOut.reset();
+        String inputFilePath = "src/test/data/MOCK_DATA.csv";
+        commandLineParserStartup.run(inputFilePath, "--encoding", encoding);
+
+        String resultString = ParserTest.retrieveFileContents(inputFilePath, Delimiter.COMMA.getDelimiterExtension());
+        Assertions.assertEquals(customOut.toString(), resultString);
 
     }
 
