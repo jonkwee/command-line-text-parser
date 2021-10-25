@@ -8,6 +8,8 @@ import com.kwee.jonathan.exceptions.nofileextension.NoFileExtensionException;
 import com.kwee.jonathan.exceptions.unsupporteddelimiter.UnsupportedDelimiterException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -25,7 +27,7 @@ public class InputTest {
     private CommandLineParserStartup commandLineParserStartup;
 
     private final ByteArrayOutputStream customOut = new ByteArrayOutputStream();
-    private PrintStream systemOut = System.out;
+    private final PrintStream systemOut = System.out;
     private SecurityManager systemSecurityManager;
 
     @BeforeAll
@@ -49,13 +51,14 @@ public class InputTest {
 
     }
 
-    @Test
-    public void noFileExtensionTest() throws ParseFileException, FileNotFoundException,
+    @ParameterizedTest
+    @ValueSource(strings = {"/////", "test.1/2"})
+    public void noFileExtensionTest(String fileName) throws ParseFileException, FileNotFoundException,
             UnsupportedDelimiterException, NoFileExtensionException, NoArgumentsException {
 
         customOut.reset();
         try {
-            commandLineParserStartup.run("/////");
+            commandLineParserStartup.run(fileName);
         } catch (SystemExitException ex) {
             Assertions.assertEquals("Please provide a file path with a file extension.\n", customOut.toString());
             Assertions.assertEquals(0, ex.getExitCode());
@@ -63,14 +66,16 @@ public class InputTest {
 
     }
 
-    @Test
-    public void unsupportedDelimiterTest() throws ParseFileException, FileNotFoundException,
+    @ParameterizedTest
+    @ValueSource(strings = {"test.notsupported", "test.txt", "index.html", "test.jar", "test.-1"})
+    public void unsupportedDelimiterTest(String fileName) throws ParseFileException, FileNotFoundException,
             UnsupportedDelimiterException, NoFileExtensionException, NoArgumentsException {
 
         customOut.reset();
         try {
-            commandLineParserStartup.run("test.notsupported");
+            commandLineParserStartup.run(fileName);
         } catch (SystemExitException ex) {
+            String extension = fileName.substring(fileName.lastIndexOf('.') + 1);
             StringBuilder unsupportedDelimiterErrorMessageFormat =
                     new StringBuilder(
                             "Extension: '%s' is not currently supported. Please use one of the supported delimiters:"
@@ -82,18 +87,19 @@ public class InputTest {
                         .append("- ")
                         .append(d.getDelimiterExtension());
             }
-            Assertions.assertEquals(String.format(unsupportedDelimiterErrorMessageFormat.toString() + "\n", "notsupported"), customOut.toString());
+            Assertions.assertEquals(String.format(unsupportedDelimiterErrorMessageFormat + "\n", extension), customOut.toString());
             Assertions.assertEquals(0, ex.getExitCode());
         }
     }
 
-    @Test
-    public void invalidInputFilePathTest() throws ParseFileException, FileNotFoundException,
+    @ParameterizedTest
+    @ValueSource(strings = {"test.csv", "test.csv", "test.space" })
+    public void invalidInputFilePathTest(String fileName) throws ParseFileException, FileNotFoundException,
             UnsupportedDelimiterException, NoFileExtensionException, NoArgumentsException {
 
         customOut.reset();
         try {
-            commandLineParserStartup.run("test.csv");
+            commandLineParserStartup.run(fileName);
         } catch (SystemExitException ex) {
             Assertions.assertEquals("Please provide a valid input file!\n", customOut.toString());
             Assertions.assertEquals(0, ex.getExitCode());

@@ -7,8 +7,13 @@ import com.kwee.jonathan.parser.factory.FileParser;
 import com.kwee.jonathan.parser.factory.FileParserFactory;
 import com.kwee.jonathan.parser.strategy.CustomDelimiterStrategy;
 import com.kwee.jonathan.parser.strategy.FixedWidthStrategy;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -21,7 +26,7 @@ import java.io.PrintStream;
 public class FactoryTest {
 
     private final ByteArrayOutputStream customOut = new ByteArrayOutputStream();
-    private PrintStream systemOut = System.out;
+    private final PrintStream systemOut = System.out;
     private SecurityManager systemSecurityManager;
 
     @BeforeAll
@@ -31,21 +36,24 @@ public class FactoryTest {
         System.setSecurityManager(new CustomSecurityManager());
     }
 
-    @Test
-    public void instantiateCustomStrategyTest() throws UnsupportedDelimiterException {
-        FileParser fileParser = FileParserFactory.instantiateFileParser("csv");
+    @ParameterizedTest
+    @ValueSource(strings = {"csv", "space", "tab"})
+    public void instantiateCustomStrategyTest(String extension) throws UnsupportedDelimiterException {
+        FileParser fileParser = FileParserFactory.instantiateFileParser(extension);
         Assertions.assertEquals(fileParser.getStrategyType().getName(), CustomDelimiterStrategy.class.getName());
     }
 
-    @Test
-    public void instantiateFixedWidthStrategyTest() throws UnsupportedDelimiterException {
-        FileParser fileParser = FileParserFactory.instantiateFileParser("10");
+    @ParameterizedTest
+    @ValueSource(strings = {"10", "15", "25", "100"})
+    public void instantiateFixedWidthStrategyTest(String extension) throws UnsupportedDelimiterException {
+        FileParser fileParser = FileParserFactory.instantiateFileParser(extension);
         Assertions.assertEquals(fileParser.getStrategyType().getName(), FixedWidthStrategy.class.getName());
     }
 
-    @Test
-    public void unsupportedDelimiterTest() throws UnsupportedDelimiterException {
-        String extension = "notsupported";
+    @ParameterizedTest
+    @ValueSource(strings = {"notsupported", "/////", "txt", "1/2", "0.5"})
+    public void unsupportedDelimiterTest(String extension) throws UnsupportedDelimiterException {
+        customOut.reset();
         try {
             FileParserFactory.instantiateFileParser(extension);
         } catch (SystemExitException ex) {

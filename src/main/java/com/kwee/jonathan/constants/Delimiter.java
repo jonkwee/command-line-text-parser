@@ -12,8 +12,7 @@ public enum Delimiter {
 
     TAB("tab", '\t'),
     SPACE("space", ' '),
-    COMMA("csv", ','),
-    ARROW("pipe", '|');
+    COMMA("csv", ',');
 
     private final String delimiterExtension;
     private final char delimiter;
@@ -37,6 +36,10 @@ public enum Delimiter {
                 .findFirst()
                 .orElseThrow(() -> new UnsupportedDelimiterException(name));
 
+    }
+
+    public static char convertNameToChar(String name) throws UnsupportedDelimiterException {
+        return convertNameToDelimiter(name).delimiter;
     }
 
 

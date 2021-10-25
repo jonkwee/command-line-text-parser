@@ -18,11 +18,12 @@ public class FileParserFactory {
     }
 
     private static boolean isExtensionNumeric(String fileExtension) {
+        long extension;
         try {
-            Long.parseLong(fileExtension);
+            extension = Long.parseLong(fileExtension);
         } catch (NumberFormatException ex) {
             return false;
         }
-        return true;
+        return extension > 0;
     }
 }
