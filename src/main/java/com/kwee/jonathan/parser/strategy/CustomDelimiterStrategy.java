@@ -21,12 +21,12 @@ public class CustomDelimiterStrategy implements ParseStrategy {
         List<String> storedString = new ArrayList<>();
         StringBuilder stringBuilder = new StringBuilder();
         while ((character = reader.read()) != -1) {
-            if (character == delimiterChar) {
-                stringBuilder = addAndResetString(stringBuilder, storedString);
-            } else if (character == '\n') {
+            // if line break, store current aggregated string and reset
+            if (character == '\n') {
                 stringBuilder = addAndResetString(stringBuilder, storedString);
                 writeToOutput(storedString, writer);
                 storedString.clear();
+            // taking into account files with CLRF (Windows) format
             } else if (character == '\r') {
                 character = reader.read();
                 if (character == '\n') {
@@ -40,6 +40,8 @@ public class CustomDelimiterStrategy implements ParseStrategy {
                     storedString.clear();
                     if (character != -1) stringBuilder.append(character);
                 }
+            } else if (character == delimiterChar) {
+                stringBuilder = addAndResetString(stringBuilder, storedString);
             } else {
                 stringBuilder.append((char) character);
             }
