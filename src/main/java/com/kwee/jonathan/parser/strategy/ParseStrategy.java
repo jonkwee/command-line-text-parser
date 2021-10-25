@@ -9,6 +9,15 @@ import java.util.List;
 
 public interface ParseStrategy {
 
+    /**
+     * Using buffered reader/writer to parse to avoid keeping large files in memory.
+     * Executes specific implementation of parsing.
+     * @param options contains the input file, file extension, output file (if specified) and encoding (if specified).
+     * @param writer
+     * @param reader
+     * @throws UnsupportedDelimiterException when file extension is not supported in current version.
+     * @throws IOException
+     */
     void executeStrategy(Options options, BufferedWriter writer, BufferedReader reader) throws UnsupportedDelimiterException, IOException;
 
     /**
